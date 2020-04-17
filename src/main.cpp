@@ -40,10 +40,11 @@ int main(int argc, char **argv) {
       std::back_inserter(cxxName), name.begin(), name.end(), escape, "_");
     auto i = 0, line = 10;
     fout << "#pragma once" << std::endl
+         << "const uint32_t " << cxxName << "_size=" << buffer.size() << ";" << std::endl
          << "const uint32_t " << cxxName << "[]={" << std::endl;
     for(auto &data: buffer) {
       fout << "0x" << std::hex << data << ",";
-      if(i++ > 10) {
+      if(i++ > line) {
         fout << std::endl;
         i = 0;
       }
