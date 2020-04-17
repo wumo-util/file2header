@@ -33,9 +33,7 @@ int main(int argc, char **argv) {
     buffer.resize(std::ceil(float(size) / sizeof(uint32_t)));
 
     f.read(reinterpret_cast<char *>(buffer.data()), size);
-
     std::ofstream fout(output);
-
     std::regex escape("[^a-zA-Z0-9]");
     std::string cxxName;
     std::regex_replace(
