@@ -2,7 +2,7 @@ from conans import ConanFile, CMake, tools
 
 class file2headerConan(ConanFile):
   name = "file2header"
-  version = "0.0.3"
+  version = "0.0.4"
   settings = "os", "compiler", "build_type", "arch"
   requires = ()
   generators = "cmake"
@@ -33,4 +33,5 @@ class file2headerConan(ConanFile):
     self.copy("*.lib", dst="lib", src="lib", keep_path=False)
 
   def package_info(self):
+    self.cpp_info.build_modules.append("cmake/resources.cmake")
     self.cpp_info.libs = tools.collect_libs(self)

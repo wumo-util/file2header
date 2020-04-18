@@ -1,0 +1,22 @@
+function(resources srcDir outputDir)
+  set(file2header ${CONAN_BIN_DIRS_FILE2HEADER}/file2header)
+  file(MAKE_DIRECTORY "${outputDir}")
+  file(GLOB_RECURSE resources "${srcDir}/*")
+  set(outputFiles)
+  foreach(file ${resources})
+    get_filename_component(fileName ${file} NAME)
+    get_filename_component(ext ${file} LAST_EXT)
+    get_filename_component(dir ${file} DIRECTORY)
+    file(RELATIVE_PATH relativeFile "${srcDir}" "${file}")
+    file(RELATIVE_PATH relativeDir "${srcDir}" "${dir}")
+    string(REGEX REPLACE "[^a-zA-Z0-9]" "_" cxxName ${fileName})
+    set(outptuFile ${outputDir}/${relativeDir})
+    set(outputFiles ${outputFiles} ${outptuFile}/${cxxName}.cpp)
+    add_custom_command(OUTPUT ${outptuFile}/${cxxName}.h ${outptuFile}/${cxxName}.cpp
+      COMMAND ${CMAKE_COMMAND} -E make_directory "${outputDir}/${relativeDir}"
+      COMMAND ${file2header} -i ${file} -o ${outptuFile} -n ${cxxName}
+      DEPENDS ${file})
+  endforeach()
+  add_library(resources STATIC ${outputFiles})
+  target_include_directories(resources INTERFACE ${outputFiles})
+endfunction()
