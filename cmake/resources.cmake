@@ -1,4 +1,4 @@
-function(resources srcDir outputDir)
+function(resources isStatic srcDir outputDir)
   set(file2header ${CONAN_BIN_DIRS_FILE2HEADER}/file2header)
   file(MAKE_DIRECTORY "${outputDir}")
   file(GLOB_RECURSE resources "${srcDir}/*")
@@ -17,6 +17,11 @@ function(resources srcDir outputDir)
       COMMAND ${file2header} -i ${file} -o ${outptuFile} -n ${cxxName}
       DEPENDS ${file})
   endforeach()
-  add_library(resources STATIC ${outputFiles})
+  if(${isStatic})
+    add_library(resources STATIC ${outputFiles})
+  else()
+    add_library(resources SHARED ${outputFiles})
+  endif()
+  
   target_include_directories(resources INTERFACE ${outputFiles})
 endfunction()

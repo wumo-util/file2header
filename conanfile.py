@@ -2,7 +2,7 @@ from conans import ConanFile, CMake, tools
 
 class file2headerConan(ConanFile):
   name = "file2header"
-  version = "0.0.5"
+  version = "0.0.6"
   settings = "os", "compiler", "build_type", "arch"
   requires = ()
   generators = "cmake"
