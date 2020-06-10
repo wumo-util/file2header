@@ -58,11 +58,19 @@ int main(int argc, char **argv) {
     std::ofstream fheader(output + cxxName + ".h");
     std::ofstream fcpp(output + cxxName + ".cpp");
 
-    fheader
-      << "#pragma once" << std::endl
-      << "#include <cstdint>" << std::endl
-      << "const uint32_t " << cxxName + "_size=" << buffer.size() << ";" << std::endl
-      << "extern const uint32_t " << cxxName << "[" << cxxName + "_size];" << std::endl;
+    fheader << "#pragma once" << std::endl
+            << R"(
+#ifdef _WIN32
+#  define EXPORTED  __declspec(dllimport)
+#else
+#  define EXPORTED
+#endif
+)" << std::endl
+            << "#include <cstdint>" << std::endl
+            << "const uint32_t " << cxxName + "_size=" << buffer.size() << ";"
+            << std::endl
+            << "EXPORTED extern const uint32_t " << cxxName << "[" << cxxName + "_size];"
+            << std::endl;
 
     auto i = 0, line = 10;
     fcpp << "#include \"" << cxxName << ".h"
