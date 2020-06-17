@@ -21,7 +21,7 @@ function(res name isStatic srcDir outputDir pattern)
     add_library(${name} STATIC ${outputFiles})
   else()
     add_library(${name} SHARED ${outputFiles})
-    target_compile_definitions(${name} PRIVATE "__BUILD_SHARED_RESOURCES__")
+    target_compile_definitions(${name} PUBLIC "__BUILD_SHARED_RESOURCES__")
   endif()
   
   target_include_directories(${name} INTERFACE ${outputFiles})
