@@ -60,7 +60,7 @@ int main(int argc, char **argv) {
 
     fheader << "#pragma once" << std::endl
             << R"(
-#if defined(_WIN32) && defined(BUILD_SHARED)
+#if defined(_WIN32) && defined(__BUILD_SHARED_RESOURCES__)
 #  define EXPORTED  __declspec(dllimport)
 #else
 #  define EXPORTED
