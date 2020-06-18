@@ -76,7 +76,7 @@ int main(int argc, char **argv) {
             << "#if defined(__cpp_lib_span) && __cpp_lib_span >= 201902L && "
                "__has_include(<span>)"
             << std::endl
-            << "#include <span>"
+            << "#include <span>" << std::endl
             << "const std::span<const uint32_t> " << cxxName << "_span{" << cxxName
             << ", " << cxxName << "_size};" << std::endl
             << "#endif" << std::endl;
