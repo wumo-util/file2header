@@ -60,16 +60,18 @@ int main(int argc, char **argv) {
 
     fheader << "#pragma once" << std::endl
             << R"(
-#if defined(_WIN32) && defined(__BUILD_SHARED_RESOURCES__)
-#  define EXPORTED  __declspec(dllimport)
-#else
-#  define EXPORTED
+#if !defined(FILE2HEADER_EXPORTED)
+  #if defined(_WIN32) && defined(__BUILD_SHARED_RESOURCES__)
+    #define FILE2HEADER_EXPORTED __declspec(dllimport)
+  #else
+    #define FILE2HEADER_EXPORTED
+  #endif
 #endif
 )" << std::endl
             << "#include <cstdint>" << std::endl
             << "const uint32_t " << cxxName + "_size=" << buffer.size() << ";"
             << std::endl
-            << "EXPORTED extern const uint32_t " << cxxName << "[" << cxxName + "_size];"
+            << "FILE2HEADER_EXPORTED extern const uint32_t " << cxxName << "[" << cxxName + "_size];"
             << std::endl;
 
     auto i = 0, line = 10;
