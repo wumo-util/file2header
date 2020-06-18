@@ -69,10 +69,17 @@ int main(int argc, char **argv) {
 #endif
 )" << std::endl
             << "#include <cstdint>" << std::endl
-            << "const uint32_t " << cxxName + "_size=" << buffer.size() << ";"
+            << "const uint32_t " << cxxName << "_size=" << buffer.size() << ";"
             << std::endl
-            << "FILE2HEADER_EXPORTED extern const uint32_t " << cxxName << "[" << cxxName + "_size];"
-            << std::endl;
+            << "FILE2HEADER_EXPORTED extern const uint32_t " << cxxName << "["
+            << cxxName + "_size];" << std::endl
+            << "#if defined(__cpp_lib_span) && __cpp_lib_span >= 201902L && "
+               "__has_include(<span>)"
+            << std::endl
+            << "#include <span>"
+            << "const std::span<const uint32_t> " << cxxName << "_span{" << cxxName
+            << ", " << cxxName << "_size};" << std::endl
+            << "#endif" << std::endl;
 
     auto i = 0, line = 10;
     fcpp << "#include \"" << cxxName << ".h"
