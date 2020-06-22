@@ -1,4 +1,4 @@
-function(res name isStatic srcDir outputDir pattern)
+function(res name isStatic namespace srcDir outputDir pattern)
   set(file2header ${CONAN_BIN_DIRS_FILE2HEADER}/file2header)
   file(MAKE_DIRECTORY "${outputDir}")
   file(GLOB_RECURSE resources "${srcDir}/${pattern}")
@@ -14,7 +14,7 @@ function(res name isStatic srcDir outputDir pattern)
     set(outputFiles ${outputFiles} ${outptuFile}/${cxxName}.cpp)
     add_custom_command(OUTPUT ${outptuFile}/${cxxName}.h ${outptuFile}/${cxxName}.cpp
       COMMAND ${CMAKE_COMMAND} -E make_directory "${outputDir}/${relativeDir}"
-      COMMAND ${file2header} -i ${file} -o ${outptuFile} -n ${cxxName}
+      COMMAND ${file2header} -i ${file} -o ${outptuFile} -n ${cxxName} -ns ${namespace} -r ${relativeDir}
       DEPENDS ${file})
   endforeach()
   if(${isStatic})
@@ -28,11 +28,21 @@ function(res name isStatic srcDir outputDir pattern)
 endfunction()
 
 function(static_res target srcDir outputDir pattern)
-  res(${target}_resources True ${srcDir} ${outputDir} ${pattern})
+  res(${target}_resources True "" ${srcDir} ${outputDir} ${pattern})
   target_link_libraries(${target} PUBLIC ${target}_resources)
 endfunction()
 
 function(shared_res target srcDir outputDir pattern)
-  res(${target}_resources False ${srcDir} ${outputDir} ${pattern})
+  res(${target}_resources False "" ${srcDir} ${outputDir} ${pattern})
+  target_link_libraries(${target} PUBLIC ${target}_resources)
+endfunction()
+
+function(static_res_ns target namespace srcDir outputDir pattern)
+  res(${target}_resources True namespace ${srcDir} ${outputDir} ${pattern})
+  target_link_libraries(${target} PUBLIC ${target}_resources)
+endfunction()
+
+function(shared_res_ns target namespace srcDir outputDir pattern)
+  res(${target}_resources False namespace ${srcDir} ${outputDir} ${pattern})
   target_link_libraries(${target} PUBLIC ${target}_resources)
 endfunction()
