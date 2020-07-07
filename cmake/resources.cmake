@@ -18,7 +18,6 @@ function(res name isStatic namespace srcDir outputDir pattern)
       COMMAND ${file2header} -i ${file} -o ${outptuFile} -n ${cxxName} -s ${namespace} -r ${relativeDir}
       DEPENDS ${file})
   endforeach()
-  message(STATUS ${outputFiles})
   if(${isStatic})
     add_library(${name} STATIC ${outputFiles})
   else()
