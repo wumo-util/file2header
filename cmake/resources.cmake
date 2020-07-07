@@ -12,11 +12,13 @@ function(res name isStatic namespace srcDir outputDir pattern)
     string(REGEX REPLACE "[^a-zA-Z0-9]" "_" cxxName ${fileName})
     set(outptuFile ${outputDir}/${relativeDir})
     set(outputFiles ${outputFiles} ${outptuFile}/${cxxName}.cpp)
+    
     add_custom_command(OUTPUT ${outptuFile}/${cxxName}.h ${outptuFile}/${cxxName}.cpp
       COMMAND ${CMAKE_COMMAND} -E make_directory "${outputDir}/${relativeDir}"
       COMMAND ${file2header} -i ${file} -o ${outptuFile} -n ${cxxName} -s ${namespace} -r ${relativeDir}
       DEPENDS ${file})
   endforeach()
+  message(STATUS ${outputFiles})
   if(${isStatic})
     add_library(${name} STATIC ${outputFiles})
   else()
