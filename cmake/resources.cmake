@@ -25,7 +25,7 @@ function(res name isStatic namespace srcDir outputDir pattern)
     target_compile_definitions(${name} PUBLIC "__BUILD_SHARED_RESOURCES__")
   endif()
   
-  target_include_directories(${name} INTERFACE ${outputFiles})
+  target_include_directories(${name} INTERFACE ${outputDir})
 endfunction()
 
 function(static_res target srcDir outputDir pattern)
