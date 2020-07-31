@@ -78,13 +78,13 @@ int main(int argc, char **argv) {
 
     output = (endWith(output, "/") || endWith(output, "\\")) ? output :
                                                                output + separator();
-    std::ofstream fheader(output + cxxName + ".h");
+    std::ofstream fheader(output + cxxName + ".hpp");
     std::ofstream fcpp(output + cxxName + ".cpp");
 
     fheader << "#pragma once" << std::endl
             << R"(
 #if !defined(FILE2HEADER_EXPORTED)
-  #if defined(_WIN32) && defined(__BUILD_SHARED_RESOURCES__)
+  #if defined(_WIN32) && defined(FILE2HEADER_BUILD_SHARED_LIBRARY)
     #define FILE2HEADER_EXPORTED __declspec(dllimport)
   #else
     #define FILE2HEADER_EXPORTED
@@ -112,7 +112,7 @@ int main(int argc, char **argv) {
             << nsEnd << std::endl;
 
     auto i = 0, line = 10;
-    fcpp << "#include \"" << cxxName << ".h"
+    fcpp << "#include \"" << cxxName << ".hpp"
          << "\"" << std::endl
          << nsBegin << std::endl
          << "const uint32_t " << cxxName << "[]={" << std::endl;

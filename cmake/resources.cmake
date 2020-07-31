@@ -13,7 +13,7 @@ function(res name isStatic namespace srcDir outputDir pattern)
     set(outptuFile ${outputDir}/${relativeDir})
     set(outputFiles ${outputFiles} ${outptuFile}/${cxxName}.cpp)
     
-    add_custom_command(OUTPUT ${outptuFile}/${cxxName}.h ${outptuFile}/${cxxName}.cpp
+    add_custom_command(OUTPUT ${outptuFile}/${cxxName}.hpp ${outptuFile}/${cxxName}.cpp
       COMMAND ${CMAKE_COMMAND} -E make_directory "${outputDir}/${relativeDir}"
       COMMAND ${file2header} -i ${file} -o ${outptuFile} -n ${cxxName} -s ${namespace} -r ${relativeDir}
       DEPENDS ${file})
@@ -22,7 +22,7 @@ function(res name isStatic namespace srcDir outputDir pattern)
     add_library(${name} STATIC ${outputFiles})
   else()
     add_library(${name} SHARED ${outputFiles})
-    target_compile_definitions(${name} PUBLIC "__BUILD_SHARED_RESOURCES__")
+    target_compile_definitions(${name} PUBLIC "FILE2HEADER_BUILD_SHARED_LIBRARY")
   endif()
   
   target_include_directories(${name} INTERFACE ${outputDir})

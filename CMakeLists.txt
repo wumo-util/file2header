@@ -24,5 +24,5 @@ target_link_libraries(file2header
   PUBLIC
   ${CONAN_LIBS}
   $<$<PLATFORM_ID:Linux>:dl>)
-
+install(TARGETS file2header)
     
